@@ -4,8 +4,8 @@
 # allow users of the gvm group run openvas
 #  %gvm ALL = NOPASSWD: /usr/local/sbin/openvas
 
-#sudo useradd -r -M -U -G sudo -s /usr/sbin/nologin gvm
-#sudo usermod -aG gvm $USER
+sudo useradd -r -M -U -G sudo -s /usr/sbin/nologin gvm
+sudo usermod -aG gvm $USER
 #su $USER # we are not going to run this line as we'll install as root.
 
 
@@ -404,7 +404,6 @@ sudo chown -R gvm:gvm /var/lib/openvas
 sudo chown -R gvm:gvm /var/lib/notus
 sudo chown -R gvm:gvm /var/log/gvm
 sudo chown -R gvm:gvm /run/gvmd
-
 sudo chmod -R g+srw /var/lib/gvm
 sudo chmod -R g+srw /var/lib/openvas
 sudo chmod -R g+srw /var/log/gvm
@@ -413,7 +412,6 @@ sudo chown gvm:gvm /usr/local/sbin/gvmd
 sudo chmod 6750 /usr/local/sbin/gvmd
 
 curl -f -L https://www.greenbone.net/GBCommunitySigningKey.asc -o /tmp/GBCommunitySigningKey.asc
-
 export GNUPGHOME=/tmp/openvas-gnupg
 mkdir -p $GNUPGHOME
 
