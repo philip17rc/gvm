@@ -1,3 +1,5 @@
+#!/bin/bash
+
 export INSTALL_PREFIX=/usr/local
 
 export PATH=$PATH:$INSTALL_PREFIX/sbin
