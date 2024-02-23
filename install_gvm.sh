@@ -1,16 +1,9 @@
-
-# sudo visudo
-# ...
-# allow users of the gvm group run openvas
-#  %gvm ALL = NOPASSWD: /usr/local/sbin/openvas
-
 sudo useradd -r -M -U -G sudo -s /usr/sbin/nologin gvm
-sudo usermod -aG gvm $USER
-#su $USER # we are not going to run this line as we'll install as root.
-
 
 export INSTALL_PREFIX=/usr/local
+
 export PATH=$PATH:$INSTALL_PREFIX/sbin
+
 export SOURCE_DIR=$HOME/source
 mkdir -p $SOURCE_DIR
 
@@ -30,13 +23,12 @@ sudo apt install --no-install-recommends --assume-yes \
   python3-pip \
   gnupg
   
-  
 curl -f -L https://www.greenbone.net/GBCommunitySigningKey.asc -o /tmp/GBCommunitySigningKey.asc
 gpg --import /tmp/GBCommunitySigningKey.asc
 
 echo "8AE4BE429B60A59B311C2E739823FAA60ED1E580:6:" | gpg --import-ownertrust
 
-export GVM_LIBS_VERSION=22.7.1
+export GVM_LIBS_VERSION=22.8.0
 
 sudo apt install -y \
   libglib2.0-dev \
@@ -49,20 +41,17 @@ sudo apt install -y \
   libpcap-dev \
   libnet1-dev \
   libpaho-mqtt-dev
-
+  
 sudo apt install -y \
   libldap2-dev \
   libradcli-dev
-  
   
 curl -f -L https://github.com/greenbone/gvm-libs/archive/refs/tags/v$GVM_LIBS_VERSION.tar.gz -o $SOURCE_DIR/gvm-libs-$GVM_LIBS_VERSION.tar.gz
 curl -f -L https://github.com/greenbone/gvm-libs/releases/download/v$GVM_LIBS_VERSION/gvm-libs-v$GVM_LIBS_VERSION.tar.gz.asc -o $SOURCE_DIR/gvm-libs-$GVM_LIBS_VERSION.tar.gz.asc
 
 gpg --verify $SOURCE_DIR/gvm-libs-$GVM_LIBS_VERSION.tar.gz.asc $SOURCE_DIR/gvm-libs-$GVM_LIBS_VERSION.tar.gz
 
-
 tar -C $SOURCE_DIR -xvzf $SOURCE_DIR/gvm-libs-$GVM_LIBS_VERSION.tar.gz
-
 
 mkdir -p $BUILD_DIR/gvm-libs && cd $BUILD_DIR/gvm-libs
 
@@ -80,7 +69,7 @@ make DESTDIR=$INSTALL_DIR/gvm-libs install
 
 sudo cp -rv $INSTALL_DIR/gvm-libs/* /
 
-export GVMD_VERSION=22.9.0
+export GVMD_VERSION=23.2.0
 
 sudo apt install -y \
   libglib2.0-dev \
@@ -115,7 +104,6 @@ sudo apt install -y --no-install-recommends \
   gnutls-bin \
   xml-twig-tools
   
-
 curl -f -L https://github.com/greenbone/gvmd/archive/refs/tags/v$GVMD_VERSION.tar.gz -o $SOURCE_DIR/gvmd-$GVMD_VERSION.tar.gz
 curl -f -L https://github.com/greenbone/gvmd/releases/download/v$GVMD_VERSION/gvmd-$GVMD_VERSION.tar.gz.asc -o $SOURCE_DIR/gvmd-$GVMD_VERSION.tar.gz.asc
 
@@ -145,13 +133,12 @@ make DESTDIR=$INSTALL_DIR/gvmd install
 
 sudo cp -rv $INSTALL_DIR/gvmd/* /
 
-export PG_GVM_VERSION=22.6.1
+export PG_GVM_VERSION=22.6.4
 
 sudo apt install -y \
   libglib2.0-dev \
   postgresql-server-dev-15 \
   libical-dev
-  
   
 curl -f -L https://github.com/greenbone/pg-gvm/archive/refs/tags/v$PG_GVM_VERSION.tar.gz -o $SOURCE_DIR/pg-gvm-$PG_GVM_VERSION.tar.gz
 curl -f -L https://github.com/greenbone/pg-gvm/releases/download/v$PG_GVM_VERSION/pg-gvm-$PG_GVM_VERSION.tar.gz.asc -o $SOURCE_DIR/pg-gvm-$PG_GVM_VERSION.tar.gz.asc
@@ -173,7 +160,8 @@ make DESTDIR=$INSTALL_DIR/pg-gvm install
 
 sudo cp -rv $INSTALL_DIR/pg-gvm/* /
 
-export GSA_VERSION=22.7.0
+export GSA_VERSION=23.0.0
+
 curl -f -L https://github.com/greenbone/gsa/releases/download/v$GSA_VERSION/gsa-dist-$GSA_VERSION.tar.gz -o $SOURCE_DIR/gsa-$GSA_VERSION.tar.gz
 curl -f -L https://github.com/greenbone/gsa/releases/download/v$GSA_VERSION/gsa-dist-$GSA_VERSION.tar.gz.asc -o $SOURCE_DIR/gsa-$GSA_VERSION.tar.gz.asc
 
@@ -185,7 +173,7 @@ tar -C $SOURCE_DIR/gsa-$GSA_VERSION -xvzf $SOURCE_DIR/gsa-$GSA_VERSION.tar.gz
 sudo mkdir -p $INSTALL_PREFIX/share/gvm/gsad/web/
 sudo cp -rv $SOURCE_DIR/gsa-$GSA_VERSION/* $INSTALL_PREFIX/share/gvm/gsad/web/
 
-export GSAD_VERSION=22.6.0
+export GSAD_VERSION=22.9.0
 
 sudo apt install -y \
   libmicrohttpd-dev \
@@ -251,7 +239,7 @@ make DESTDIR=$INSTALL_DIR/openvas-smb install
 
 sudo cp -rv $INSTALL_DIR/openvas-smb/* /
 
-export OPENVAS_SCANNER_VERSION=22.7.5
+export OPENVAS_SCANNER_VERSION=22.7.9
 
 sudo apt install -y \
   bison \
@@ -265,7 +253,7 @@ sudo apt install -y \
   nmap \
   libjson-glib-dev \
   libbsd-dev
-
+  
 sudo apt install -y \
   python3-impacket \
   libsnmp-dev
@@ -296,8 +284,7 @@ make DESTDIR=$INSTALL_DIR/openvas-scanner install
 
 sudo cp -rv $INSTALL_DIR/openvas-scanner/* /
 
-export OSPD_OPENVAS_VERSION=22.6.0
-
+export OSPD_OPENVAS_VERSION=22.6.2
 
 sudo apt install -y \
   python3 \
@@ -313,14 +300,13 @@ sudo apt install -y \
   python3-redis \
   python3-gnupg \
   python3-paho-mqtt
-
+  
 curl -f -L https://github.com/greenbone/ospd-openvas/archive/refs/tags/v$OSPD_OPENVAS_VERSION.tar.gz -o $SOURCE_DIR/ospd-openvas-$OSPD_OPENVAS_VERSION.tar.gz
 curl -f -L https://github.com/greenbone/ospd-openvas/releases/download/v$OSPD_OPENVAS_VERSION/ospd-openvas-v$OSPD_OPENVAS_VERSION.tar.gz.asc -o $SOURCE_DIR/ospd-openvas-$OSPD_OPENVAS_VERSION.tar.gz.asc
 
 gpg --verify $SOURCE_DIR/ospd-openvas-$OSPD_OPENVAS_VERSION.tar.gz.asc $SOURCE_DIR/ospd-openvas-$OSPD_OPENVAS_VERSION.tar.gz
 
 tar -C $SOURCE_DIR -xvzf $SOURCE_DIR/ospd-openvas-$OSPD_OPENVAS_VERSION.tar.gz
-
 
 cd $SOURCE_DIR/ospd-openvas-$OSPD_OPENVAS_VERSION
 
@@ -330,7 +316,7 @@ python3 -m pip install --root=$INSTALL_DIR/ospd-openvas --no-warn-script-locatio
 
 sudo cp -rv $INSTALL_DIR/ospd-openvas/* /
 
-export NOTUS_VERSION=22.6.0
+export NOTUS_VERSION=22.6.2
 
 sudo apt install -y \
   python3 \
@@ -374,7 +360,7 @@ sudo apt install -y \
   python3-lxml \
   python3-defusedxml \
   python3-paramiko
-
+  
 mkdir -p $INSTALL_DIR/gvm-tools
 
 python3 -m pip install --root=$INSTALL_DIR/gvm-tools --no-warn-script-location gvm-tools
@@ -388,10 +374,13 @@ sudo chown redis:redis /etc/redis/redis-openvas.conf
 echo "db_address = /run/redis-openvas/redis.sock" | sudo tee -a /etc/openvas/openvas.conf
 
 sudo systemctl start redis-server@openvas.service
+
 sudo systemctl enable redis-server@openvas.service
 
 sudo usermod -aG redis gvm
+
 sudo apt install -y mosquitto
+
 sudo systemctl start mosquitto.service
 sudo systemctl enable mosquitto.service
 echo -e "mqtt_server_uri = localhost:1883\ntable_driven_lsc = yes" | sudo tee -a /etc/openvas/openvas.conf
@@ -404,6 +393,7 @@ sudo chown -R gvm:gvm /var/lib/openvas
 sudo chown -R gvm:gvm /var/lib/notus
 sudo chown -R gvm:gvm /var/log/gvm
 sudo chown -R gvm:gvm /run/gvmd
+
 sudo chmod -R g+srw /var/lib/gvm
 sudo chmod -R g+srw /var/lib/openvas
 sudo chmod -R g+srw /var/log/gvm
@@ -412,6 +402,7 @@ sudo chown gvm:gvm /usr/local/sbin/gvmd
 sudo chmod 6750 /usr/local/sbin/gvmd
 
 curl -f -L https://www.greenbone.net/GBCommunitySigningKey.asc -o /tmp/GBCommunitySigningKey.asc
+
 export GNUPGHOME=/tmp/openvas-gnupg
 mkdir -p $GNUPGHOME
 
@@ -422,4 +413,5 @@ export OPENVAS_GNUPG_HOME=/etc/openvas/gnupg
 sudo mkdir -p $OPENVAS_GNUPG_HOME
 sudo cp -r /tmp/openvas-gnupg/* $OPENVAS_GNUPG_HOME/
 sudo chown -R gvm:gvm $OPENVAS_GNUPG_HOME
+
 
