@@ -1,5 +1,3 @@
-sudo cp -v $BUILD_DIR/ospd-openvas.service /etc/systemd/system/
-
 cat << EOF > $BUILD_DIR/notus-scanner.service
 [Unit]
 Description=Notus Scanner
@@ -22,3 +20,7 @@ RestartSec=60
 [Install]
 WantedBy=multi-user.target
 EOF
+
+
+sudo cp -v $BUILD_DIR/notus-scanner.service /etc/systemd/system/
+

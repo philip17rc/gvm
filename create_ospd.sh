@@ -1,4 +1,4 @@
-sudo cat << EOF > $BUILD_DIR/ospd-openvas.service
+cat << EOF > $BUILD_DIR/ospd-openvas.service
 [Unit]
 Description=OSPd Wrapper for the OpenVAS Scanner (ospd-openvas)
 Documentation=man:ospd-openvas(8) man:openvas(8)
@@ -21,3 +21,7 @@ RestartSec=60
 [Install]
 WantedBy=multi-user.target
 EOF
+
+
+sudo cp -v $BUILD_DIR/ospd-openvas.service /etc/systemd/system/
+

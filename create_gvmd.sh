@@ -1,5 +1,3 @@
-sudo cp -v $BUILD_DIR/notus-scanner.service /etc/systemd/system/
-
 cat << EOF > $BUILD_DIR/gvmd.service
 [Unit]
 Description=Greenbone Vulnerability Manager daemon (gvmd)
@@ -22,3 +20,5 @@ TimeoutStopSec=10
 [Install]
 WantedBy=multi-user.target
 EOF
+
+sudo cp -v $BUILD_DIR/gvmd.service /etc/systemd/system/

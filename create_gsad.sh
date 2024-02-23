@@ -1,5 +1,3 @@
-sudo cp -v $BUILD_DIR/gvmd.service /etc/systemd/system/
-
 cat << EOF > $BUILD_DIR/gsad.service
 [Unit]
 Description=Greenbone Security Assistant daemon (gsad)
@@ -14,7 +12,7 @@ Group=gvm
 RuntimeDirectory=gsad
 RuntimeDirectoryMode=2775
 PIDFile=/run/gsad/gsad.pid
-ExecStart=/usr/local/sbin/gsad --foreground --listen=0.0.0.0 --port=9392 --http-only
+ExecStart=/usr/local/sbin/gsad --foreground --listen=127.0.0.1 --port=9392 --http-only
 Restart=always
 TimeoutStopSec=10
 
@@ -22,3 +20,6 @@ TimeoutStopSec=10
 WantedBy=multi-user.target
 Alias=greenbone-security-assistant.service
 EOF
+
+sudo cp -v $BUILD_DIR/gsad.service /etc/systemd/system/
+
